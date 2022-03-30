@@ -1,0 +1,15 @@
+version: "3.4"
+services:
+    bucket:
+        build:
+            context: .
+            target: production
+        volumes:
+            - .:/src
+        command: npm run prod
+        ports:
+            - "3002:3000"
+        environment:
+            NODE_ENV: production
+            DEBUG: nodejs-docker-express:* 
+        restart: always

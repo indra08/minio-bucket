@@ -5,16 +5,18 @@ const port = 3000;
 const bodyParser = require("body-parser");
 
 //Here we are configuring express to use body-parser as middle-ware.
-app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 
 app.get('/',(req, res) => {
     res.end("Point on "+port);
 });
 
-app.listen(port, ()=>{
-    console.log(`app listening at port ${port}`)
-});
+app.use("/", router);
 
 //bucket
 const fileUpload = require('express-fileupload');
@@ -23,7 +25,15 @@ app.use(fileUpload({
   createParentPath: true
 }));
 
-app.post('/upload:bucket', function(req, res) {
+app.post('/upload', function(req, res) {
+
+    res.send({
+        status: 404,
+        message: 'bucket is empty, plese fill after link upload/{bucketname}'
+    });
+});
+
+app.post('/upload/:bucket', function(req, res) {
   
     if(req.params.bucket == null){
         res.send({
@@ -57,5 +67,15 @@ app.post('/upload:bucket', function(req, res) {
     });
 });
 
+/* Error handler middleware */
+app.use((err, req, res, next) => {
+    const statusCode = err.statusCode || 500;
+    console.error(err.message, err.stack);
+    res.status(statusCode).json({'message': err.message});
+  
+    return;
+  });
 
-app.use("/", router);
+app.listen(port, () => {
+    console.log(`app listening at http://localhost:${port}`)
+});

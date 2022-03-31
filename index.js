@@ -26,6 +26,8 @@ app.use(fileUpload({
 }));
 
 app.post('/upload', function(req, res) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
     res.send({
         status: 404,
@@ -35,6 +37,9 @@ app.post('/upload', function(req, res) {
 
 app.post('/upload/:bucket', function(req, res) {
   
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+
     if(req.params.bucket == null){
         res.send({
             status: 404,

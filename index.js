@@ -5,6 +5,9 @@ const port = 3000;
 const bodyParser = require("body-parser");
 
 //Here we are configuring express to use body-parser as middle-ware.
+var cors = require('cors');
+app.use(cors());
+app.options('*', cors());
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({

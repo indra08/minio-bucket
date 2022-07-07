@@ -44,6 +44,7 @@ app.post('/upload', function(req, res) {
 
 app.post('/upload/:bucket', function(req, res) {
   
+    req.connection.setTimeout( 1000 * 60 * 60 ); // ten minutes
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 
@@ -81,6 +82,7 @@ app.post('/upload/:bucket', function(req, res) {
 
 app.post('/upload_link/:bucket', async function(req, res) {
   
+    req.connection.setTimeout( 1000 * 60 * 60 ); // ten minutes
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 

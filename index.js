@@ -55,7 +55,12 @@ app.post('/upload/:bucket', function(req, res) {
     }
     
     const files = req.files;
-    var fileName = new Date().getTime() +"."+ files.file.name.split('.').pop();;
+    let reqFileName = req.body.filename;
+    var fileName = new Date().getTime() +"."+ files.file.name.split('.').pop();
+    if(reqFileName != null && reqFileName != ""){
+        fileName = reqFileName +"."+ files.file.name.split('.').pop();
+    }
+
     minioClient.minioClient.putObject(req.params.bucket, fileName, files.file.data, function(error, etag) {
 
         if(error) {
@@ -91,7 +96,8 @@ app.post('/upload_link/:bucket', async function(req, res) {
         });
     }
 
-    let link = req.body.link;  
+    let link = req.body.link;
+    let reqFileName = req.body.filename;
     let data = link.split('?')[0];
     const ext = data
     .split('.')
@@ -99,6 +105,10 @@ app.post('/upload_link/:bucket', async function(req, res) {
 
     const file = new Date().getTime() +"."+ ext;
     var fileName = file;
+
+    if(reqFileName != null && reqFileName != ""){
+        fileName = reqFileName +"."+ ext;
+    }
     
     const response = await axios.get(
         link,
